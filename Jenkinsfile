@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Update version') {
       steps {
-        sh './update_version.sh'
+        sh 'sudo ./update_version.sh'
       }
     }
     stage('Push') {
