@@ -30,6 +30,7 @@ pipeline {
               sshagent(credentials: ['f98af7ed-88ff-4d48-83a5-61420cdb59a4']) {
                 sh "git add ."
                 sh "pwd"
+                sh "ls"
                 sh "git branch"
                 sh "git commit -m 'update version'"
                 sh "git push"
