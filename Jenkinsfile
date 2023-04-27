@@ -4,6 +4,7 @@ pipeline {
   stages {
     stage('Update version') {
       steps {
+        sh "cd"
         script {
           def xmlFiles = sh(
             script: 'find . -type f -name "*.xml"',
