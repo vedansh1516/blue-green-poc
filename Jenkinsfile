@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  environment {
-    HOME = sh(script: 'echo $HOME', returnStdout: true).trim()
-  }
-
   stages {
     stage('Update version') {
       steps {
@@ -17,8 +13,7 @@ pipeline {
           xmlFiles.each { xmlFile ->
             def currentVersion = sh(
               script: "xmlstarlet sel -t -v '/project/version' ${xmlFile}",
-              returnStdout: true,
-              env: [HOME: env.HOME] // Set the HOME environment variable for the xmlstarlet command
+              returnStdout: true
             ).trim()
 
             def newVersion = currentVersion.tokenize('.').with {
