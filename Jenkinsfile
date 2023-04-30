@@ -13,14 +13,7 @@ pipeline {
                     def newVersion = currentVersion.toInteger() + 1
                     versionNode.setValue(newVersion.toString())
                     writeFile file: 'pom.xml', text: groovy.xml.XmlUtil.serialize(rootNode)
-                }
-            }
-        }
-        stage('Build and Deploy') {
-            steps {
-                script {
-                    cd
-            }
-        }
-    }
+               }
+          }
+     }
 }
