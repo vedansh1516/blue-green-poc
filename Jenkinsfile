@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     sh "ls"
-                    sh "cat pom.xml"
+//                     sh "cat pom.xml"
                     def pomFile = readFile 'pom.xml'
                     def rootNode = new XmlSlurper().parseText(pomFile)
                     def versionNode = rootNode.version
