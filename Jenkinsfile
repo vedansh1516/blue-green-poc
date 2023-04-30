@@ -1,10 +1,10 @@
+import groovy.util.XmlSlurper
 pipeline {
     agent any
     stages {
         stage('Update POM version') {
             steps {
                 script {
-                    import groovy.util.XmlSlurper
                     sh "ls"
 //                     sh "cat pom.xml"
                     def pomFile = readFile 'pom.xml'
