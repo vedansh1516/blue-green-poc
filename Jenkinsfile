@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Build and Deploy') {
             steps {
-                // Run Maven build and deploy commands here
+                cd
             }
         }
     }
