@@ -18,7 +18,8 @@ pipeline {
         }
         stage('Build and Deploy') {
             steps {
-                cd
+                script {
+                    cd
             }
         }
     }
