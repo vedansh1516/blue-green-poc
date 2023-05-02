@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     def folderPath = '.' // use the current directory
-                    sh "head -50 pom.xml"
+//                     sh "head -50 pom.xml"
                     // Iterate over each .xml file in the folder
                     def xmlFiles = findFiles(glob: "*.xml") // ** matches all subdirectories
                     echo "XML files found: ${xmlFiles.collect { it.path }}"
