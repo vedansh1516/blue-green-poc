@@ -21,7 +21,7 @@ pipeline {
                         def writer = new FileWriter(file)
                         new XmlNodePrinter(new PrintWriter(writer)).print(xml)
                         writer.close()
-                        sh "head -50 pom.xml"
+                    sh "head -50 pom.xml"
                     }
                 }
             }
