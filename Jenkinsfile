@@ -5,7 +5,7 @@ pipeline {
         stage('Update Version') {
             steps {
                 script {
-                    def files = findFiles(glob: '**/*.xml')
+                    def files = findFiles(glob: '*.xml')
                     files.each { file ->
                         def xmlText = readFile(file)
                         def xml = new XmlParser().parseText(xmlText)
