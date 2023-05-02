@@ -11,9 +11,11 @@ pipeline {
                     def xmlFiles = findFiles(glob: "${folderPath}/**/*.xml") // ** matches all subdirectories
                     xmlFiles.each { file ->
                         def xml = new XmlParser().parseText(file.getText())
+                        println("The value of xml is " + xml);
 
                         // Find the version element in the XML and update its value
                         def version = xml.version.text()
+                        println("The value of xml is " + xml);
                         def newVersion = incrementVersion(version)
                         xml.version.value = newVersion
 
