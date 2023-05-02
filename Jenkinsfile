@@ -2,33 +2,33 @@ pipeline {
     agent any
 
     stages {
-        stage('Update XML versions') {
+        stage('Update Version') {
             steps {
                 script {
-                    def folderPath = '/path/to/xml/files'
-                    def versionRegex = /<version>([0-9]+)\.([0-9]+)\.([0-9]+)<\/version>/
-                    def versionIncrement = 1
+                    def files = findFiles(glob: '*.xml')
+                    files.each { file ->
+                        def xml = new XmlParser().parse(file)
+                        def currentVersion = xml.getVersion()
+                        def newVersion = incrementVersion(currentVersion)
 
-                    def xmlFiles = findFiles(glob: "*.xml")
+                        // Update the version in the XML file
+                        xml.version = newVersion
+                        def writer = new StringWriter()
+                        new XmlNodePrinter(new PrintWriter(writer)).print(xml)
+                        file.setText(writer.toString())
 
-                    xmlFiles.each { file ->
-                        def fileContents = readFile(file.path)
-                        def currentVersion = fileContents =~ versionRegex
-
-                        if (currentVersion) {
-                            def newVersion = currentVersion[0][0].split('.').collect { Integer.parseInt(it) } // split current version into list of integers
-                            newVersion[2] += versionIncrement // increment the patch version by 1
-                            newVersion = newVersion.join('.') // join the list back into a string
-
-                            def newFileContents = fileContents.replaceAll(versionRegex, newVersion)
-
-                            writeFile(file.path, newFileContents) // overwrite the file with the updated version
-                        }
+                        echo "Version in file ${file} updated from ${currentVersion} to ${newVersion}"
                     }
-
-                    sh "head -50 pom.xml" // commit changes
                 }
             }
         }
     }
+}
+
+// Function to increment the version by 1
+def incrementVersion(currentVersion) {
+    def parts = currentVersion.tokenize('.')
+    def lastPart = parts[parts.size() - 1].toInteger()
+    parts[parts.size() - 1] = (lastPart + 1).toString()
+    return parts.join('.')
 }
