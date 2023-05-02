@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     def folderPath = '.' // use the current directory
-
+                    sh "head -50 pom.xml"
                     // Iterate over each .xml file in the folder
                     def xmlFiles = findFiles(glob: "${folderPath}/**/*.xml") // ** matches all subdirectories
                     xmlFiles.each { file ->
@@ -21,8 +21,8 @@ pipeline {
                         def writer = new FileWriter(file)
                         new XmlNodePrinter(new PrintWriter(writer)).print(xml)
                         writer.close()
-                    sh "head -50 pom.xml"
                     }
+                    sh "head -50 pom.xml"
                 }
             }
         }
