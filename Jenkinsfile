@@ -5,16 +5,16 @@ pipeline {
         stage('Update Version') {
             steps {
                 script {
-                    def files = findFiles(glob: '*.xml')
+                    def files = findFiles(glob: '**/*.xml')
                     files.each { file ->
-                        def xmlText = file.getText()
+                        def xmlText = readFile(file)
                         def xml = new XmlParser().parseText(xmlText)
                         def currentVersion = xml.getVersion()
                         def newVersion = incrementVersion(currentVersion)
 
                         // Update the version in the XML file
                         xml.version = newVersion
-                        file.write(xml.toString())
+                        writeFile(file, xml.toString())
 
                         echo "Version in file ${file} updated from ${currentVersion} to ${newVersion}"
                     }
