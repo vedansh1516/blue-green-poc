@@ -7,7 +7,7 @@ pipeline {
                 script {
                     sh "pwd"
                     sh "ls"
-                    def folderPath = '/path/to/folder' // Replace with the actual path to the folder
+                    def folderPath = '/var/lib/jenkins/workspace/ecr-test' // Replace with the actual path to the folder
 
                     // Define the regular expression pattern to match the version string
                     def pattern = /<version>([0-9]+)\.([0-9]+)\.([0-9]+)<\/version>/
