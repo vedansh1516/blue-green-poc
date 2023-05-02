@@ -15,7 +15,7 @@ pipeline {
                     // Iterate over each .xml file in the folder
                     def xmlFiles = findFiles(glob: '*.xml')
                     xmlFiles.each { file ->
-                        def content = file.getText()
+                        def content = fileWrapper.readFile()
                         def matcher = pattern.matcher(content)
 
                         // Find the version string in the file content and increment it by 1
