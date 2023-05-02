@@ -10,7 +10,7 @@ pipeline {
                     def folderPath = '/path/to/folder' // Replace with the actual path to the folder
 
                     // Define the regular expression pattern to match the version string
-                    def pattern = '<version>[0-9]+\.[0-9]+\.[0-9]+</version>'
+                    def pattern = """ <version>[0-9]+\.[0-9]+\.[0-9]+</version> """
 
                     // Iterate over each .xml file in the folder
                     def xmlFiles = findFiles(glob: "${folderPath}/*.xml")
