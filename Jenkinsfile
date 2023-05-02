@@ -7,15 +7,14 @@ pipeline {
                 script {
                     def files = findFiles(glob: '*.xml')
                     files.each { file ->
-                        def xml = new XmlParser().parse(file)
+                        def xmlText = file.getText()
+                        def xml = new XmlParser().parseText(xmlText)
                         def currentVersion = xml.getVersion()
                         def newVersion = incrementVersion(currentVersion)
 
                         // Update the version in the XML file
                         xml.version = newVersion
-                        def writer = new StringWriter()
-                        new XmlNodePrinter(new PrintWriter(writer)).print(xml)
-                        file.setText(writer.toString())
+                        file.write(xml.toString())
 
                         echo "Version in file ${file} updated from ${currentVersion} to ${newVersion}"
                     }
