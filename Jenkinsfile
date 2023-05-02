@@ -8,7 +8,7 @@ pipeline {
                     def folderPath = '.' // use the current directory
                     sh "head -50 pom.xml"
                     // Iterate over each .xml file in the folder
-                    def xmlFiles = findFiles(glob: "${folderPath}/**/*.xml") // ** matches all subdirectories
+                    def xmlFiles = findFiles(glob: "*.xml") // ** matches all subdirectories
                     echo "XML files found: ${xmlFiles.collect { it.path }}"
                     xmlFiles.each { file ->
                         def xml = new XmlParser().parseText(file.getText())
