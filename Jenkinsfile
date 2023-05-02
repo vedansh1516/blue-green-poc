@@ -22,7 +22,6 @@ pipeline {
                         new XmlNodePrinter(new PrintWriter(writer)).print(xml)
                         writer.close()
                     }
-                    println("The value of xml is " + version);
                     sh "head -50 pom.xml"
                 }
             }
