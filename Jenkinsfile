@@ -1,40 +1,24 @@
 pipeline {
     agent any
     stages {
-        stage('Update version') {
+        stage('Update XML versions') {
             steps {
                 script {
-                    def folderPath = '.'
-                    def xmlFiles = findFiles(glob: "*.xml")
-                    echo "XML files found: ${xmlFiles.collect { it.path }}"
-
+                    def xmlFiles = findFiles(glob: '*.xml')
+                    println "XML files found: ${xmlFiles}"
                     xmlFiles.each { file ->
-                        def xml = readFile(file.path)
-                        def parser = new XmlParser()
-                        def root = parser.parseText(xml)
-
-                        def version = root.version.text()
-                        def newVersion = incrementVersion(version)
-
-                        echo "Updating version from ${version} to ${newVersion} in ${file.path}"
-
-                        root.version.replaceBody(newVersion)
-
-                        def writer = new StringWriter()
-                        def xmlWriter = new XmlNodePrinter(new PrintWriter(writer))
-                        xmlWriter.preserveWhitespace = true
-                        xmlWriter.print(root)
-
-                        writeFile(file.path, writer.toString())
+                        def xml = new XmlParser().parse(file)
+                        def version = xml.version.text()
+                        println "Old version: ${version}"
+                        def newVersion = version.tokenize('.').collect { it.toInteger() }
+                        newVersion[2] += 1
+                        newVersion = newVersion.join('.')
+                        xml.version[0].value = newVersion
+                        file.write(new XmlNodePrinter().print(xml))
+                        println "New version: ${newVersion}"
                     }
                 }
             }
         }
     }
-}
-
-def incrementVersion(version) {
-    def parts = version.split(/\./)
-    def patchVersion = parts[2].toInteger() + 1
-    return "${parts[0]}.${parts[1]}.${patchVersion}"
 }
