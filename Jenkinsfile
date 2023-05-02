@@ -5,37 +5,31 @@ pipeline {
         stage('Update Version') {
             steps {
                 script {
-                    sh "pwd"
-                    sh "ls"
-//                     def folderPath = '/var/lib/jenkins/workspace/ecr-test' // Replace with the actual path to the folder
-
-                    // Define the regular expression pattern to match the version string
-                    def pattern = /<version>([0-9]+)\.([0-9]+)\.([0-9]+)<\/version>/
+                    def folderPath = '.' // use the current directory
 
                     // Iterate over each .xml file in the folder
-                    def xmlFiles = findFiles(glob: '*.xml')
+                    def xmlFiles = findFiles(glob: "${folderPath}/**/*.xml") // ** matches all subdirectories
                     xmlFiles.each { file ->
-                        def content = fileWrapper.readFile()
-                        def matcher = pattern.matcher(content)
+                        def xml = new XmlParser().parseText(file.getText())
 
-                        // Find the version string in the file content and increment it by 1
-                        if (matcher.find()) {
-                            def majorVersion = matcher.group(1).toInteger()
-                            def minorVersion = matcher.group(2).toInteger()
-                            def patchVersion = matcher.group(3).toInteger()
+                        // Find the version element in the XML and update its value
+                        def version = xml.version.text()
+                        def newVersion = incrementVersion(version)
+                        xml.version.value = newVersion
 
-                            def newVersion = "${majorVersion}.${minorVersion}.${patchVersion + 1}"
-
-                            // Replace the old version string with the new version string in the file content
-                            def newContent = content.replaceAll(pattern, newVersion)
-
-                            // Write the updated content back to the file
-                            file.write(newContent)
-                            sh "cat pom.xml"
-                        }
+                        // Write the updated XML back to the file
+                        def writer = new FileWriter(file)
+                        new XmlNodePrinter(new PrintWriter(writer)).print(xml)
+                        writer.close()
                     }
                 }
             }
         }
     }
+}
+
+def incrementVersion(version) {
+    def parts = version.split(/\./)
+    def patchVersion = parts[2].toInteger() + 1
+    return "${parts[0]}.${parts[1]}.${patchVersion}"
 }
