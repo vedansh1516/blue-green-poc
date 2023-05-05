@@ -1,3 +1,8 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
+def cwd = Paths.get("").toAbsolutePath().toString()
+
 pipeline {
     agent any
 
@@ -8,15 +13,10 @@ pipeline {
                     echo "vedansh"
                     sh "ls"
                     sh "pwd"
-                    // check if pom.xml and package.json files exist in the current working directory
-                    if (new File("./pom.xml").exists()) {
-                        println "hello"
-                    }
-                    if (new File("./package.json").exists()) {
-                        println "bye"
-                    }
-                    else {
-                     echo "no file found"   
+                    if (Files.exists(Paths.get(cwd, "pom.xml"))) {
+                        println("hello")
+                    } else if (Files.exists(Paths.get(cwd, "package.json"))) {
+                        println("bye")
                     }
 
 
