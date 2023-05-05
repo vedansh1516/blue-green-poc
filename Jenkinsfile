@@ -6,6 +6,8 @@ pipeline {
             steps {
                 script {
                     echo "vedansh"
+                    sh "ls"
+                    sh "pwd"
                     // check if pom.xml and package.json files exist in the current working directory
                     if (new File("./pom.xml").exists()) {
                         println "hello"
