@@ -10,9 +10,9 @@ pipeline {
                     if (file.exists()) {
                         println "hello"
                     }
-                    File file = new File("package.json")
-                    if (file.exists()) {
-                        println "hello"
+                    File file2 = new File("package.json")
+                    if (file2.exists()) {
+                        println "vye"
                     }
 
                     }
