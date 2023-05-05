@@ -13,12 +13,11 @@ pipeline {
                     echo "vedansh"
                     sh "ls"
                     sh "pwd"
-                    if (Files.exists(Paths.get(cwd, "pom.xml"))) {
+                    if (Files.exists(cwd.resolve("pom.xml"))) {
                         println("hello")
-                    } else if (Files.exists(Paths.get(cwd, "package.json"))) {
+                    } else if (Files.exists(cwd.resolve("package.json"))) {
                         println("bye")
                     }
-
 
                     }
                 }
