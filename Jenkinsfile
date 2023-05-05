@@ -1,8 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.Paths
-
-def cwd = Paths.get("").toAbsolutePath().toString()
-
 pipeline {
     agent any
 
@@ -10,13 +5,14 @@ pipeline {
         stage('check Version') {
             steps {
                 script {
-                    echo "vedansh"
-                    sh "ls"
-                    sh "pwd"
-                    if (Files.exists(cwd.resolve("pom.xml"))) {
-                        println("hello")
-                    } else if (Files.exists(cwd.resolve("package.json"))) {
-                        println("bye")
+                    // check if pom.xml and package.json files exist in the current working directory
+                    File file = new File("pom.xml")
+                    if (file.exists()) {
+                        println "hello"
+                    }
+                    File file = new File("package.json")
+                    if (file.exists()) {
+                        println "hello"
                     }
 
                     }
@@ -24,3 +20,5 @@ pipeline {
             }
         }
     }
+}
+
