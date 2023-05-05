@@ -14,7 +14,7 @@ pipeline {
                     if (file2.exists()) {
                         println "vye"
                     }
-
+                    println "hello"
                     }
                 }
             }
