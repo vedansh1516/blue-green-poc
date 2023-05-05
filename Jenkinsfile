@@ -13,6 +13,9 @@ pipeline {
                     if (new File("package.json").exists()) {
                         println "bye"
                     }
+                    else {
+                        echo "no file found"    
+                    }
 
                     }
                 }
